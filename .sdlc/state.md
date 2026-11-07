@@ -1,7 +1,7 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 8 Pull request   Status: IN_PROGRESS
+Current stage: 8 Pull request   Status: APPROVED (G8), publishing
 
 ## Stages
 | Stage | Status | Approved at | Commit |
@@ -14,7 +14,7 @@ Current stage: 8 Pull request   Status: IN_PROGRESS
 | 5 Implementation | APPROVED (P0-P3) | 2026-11-07 | see git log |
 | 6 Code review | APPROVED | 2026-11-07 | see git log |
 | 7 Verify | APPROVED | 2026-11-07 | see git log |
-| 8 Pull request | IN_PROGRESS | | |
+| 8 Pull request | APPROVED | 2026-11-07 | see git log |
 
 ## Decisions (human answers)
 - [1] Stack: vanilla HTML/CSS/JS. Enter submits; max 100 chars. Duplicates allowed, newest at bottom, titles trimmed. Storage failure: warn and continue in memory.

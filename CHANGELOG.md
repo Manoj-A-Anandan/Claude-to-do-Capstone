@@ -4,6 +4,8 @@ All notable changes are recorded here. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-07
+
 ### Added
 - Create a TODO task by entering a title and pressing **Add Task** or Enter; the task is listed at once as incomplete.
 - Validation messages for empty, whitespace-only, invisible-character-only, and over-100-character titles.
@@ -13,3 +15,7 @@ All notable changes are recorded here. The format follows [Keep a Changelog](htt
 - Screen-reader announcements for validation errors and for each added task.
 - Responsive layout for desktop and mobile widths.
 - Automated tests (unit and jsdom page tests), a headless Edge/Chrome smoke script, and a manual browser checklist.
+
+### Security
+- Task titles are always inserted as plain text, so markup in a title is shown literally and never run.
+- The page makes no network requests and has no runtime dependencies.
