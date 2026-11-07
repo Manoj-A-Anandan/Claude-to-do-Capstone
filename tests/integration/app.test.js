@@ -1,48 +1,13 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const { afterEach, test } = require('node:test');
+const { test } = require('node:test');
 
 const { createFakeStorage } = require('../helpers/fake-storage');
-const { makePage } = require('../helpers/make-page');
+const { createPageHarness } = require('../helpers/page-harness');
 
 const KEY = 'todo-app.tasks.v1';
-const open = [];
-
-async function page(options) {
-  const created = await makePage(options);
-  open.push(created);
-  return created;
-}
-
-afterEach(() => {
-  while (open.length) {
-    const closing = open.pop();
-    assert.deepStrictEqual(
-      closing.errors.map((error) => error.message),
-      [],
-      'the page reported a jsdom error',
-    );
-    closing.close();
-  }
-});
-
-function type(p, value) {
-  p.input.value = value;
-  p.input.dispatchEvent(new p.window.Event('input', { bubbles: true }));
-}
-
-function clickAdd(p, value) {
-  type(p, value);
-  p.button.click();
-}
-
-function rows(p) {
-  return Array.from(p.list.querySelectorAll('li')).map((li) => ({
-    title: li.querySelector('.task-title').textContent,
-    status: li.querySelector('.task-status').textContent,
-  }));
-}
+const { page, type, add: clickAdd, rows } = createPageHarness();
 
 function savedTitles(storage) {
   return JSON.parse(storage.peek(KEY)).map((task) => task.title);
@@ -94,7 +59,7 @@ test('S3 (FR-4): a whitespace-only title creates no task and shows a message', a
 
 test('S3 (FR-4, DD-6): a title of only invisible characters is rejected', async () => {
   const p = await page({ storage: createFakeStorage() });
-  clickAdd(p, '​​');
+  clickAdd(p, '\u200B\u200B');
   assert.deepStrictEqual(rows(p), []);
   assert.equal(p.errorRegion.textContent, 'Task title cannot be empty.');
 });
@@ -241,4 +206,70 @@ test('FR-15: a failed save keeps the task listed and shows a warning', async () 
   clickAdd(p, 'unsaved');
   assert.deepStrictEqual(rows(p).map((row) => row.title), ['unsaved']);
   assert.match(p.warningRegion.textContent, /could not be saved/);
+});
+
+test('FR-1: the input is visible and can take focus', async () => {
+  const p = await page({ storage: createFakeStorage() });
+  assert.equal(p.input.hasAttribute('hidden'), false);
+  assert.equal(p.input.disabled, false);
+  p.input.focus();
+  assert.equal(p.document.activeElement, p.input);
+});
+
+test('NFR-1: the page has one input, one button, one list and one message block', async () => {
+  const p = await page({ storage: createFakeStorage() });
+  assert.equal(p.document.querySelectorAll('input').length, 1);
+  assert.equal(p.document.querySelectorAll('button').length, 1);
+  assert.equal(p.document.querySelectorAll('ul').length, 1);
+  assert.equal(p.document.querySelectorAll('.messages').length, 1);
+  assert.equal(p.document.querySelectorAll('form').length, 1);
+});
+
+test('CR-9: the task list keeps list semantics when list-style is removed', async () => {
+  const p = await page({ storage: createFakeStorage() });
+  assert.equal(p.list.getAttribute('role'), 'list');
+});
+
+test('FR-15, DD-7: BACKUP_FAILED is shown when the old data could not be copied', async () => {
+  const storage = createFakeStorage({ [KEY]: 'garbage' });
+  storage.failures.setKeys.add(KEY + '.unreadable');
+  const p = await page({ storage });
+  clickAdd(p, 'fresh');
+  assert.match(p.warningRegion.textContent, /could not be copied/);
+  assert.deepStrictEqual(savedTitles(storage), ['fresh']);
+});
+
+test('the view falls back to a generic message for an unknown code', async () => {
+  const p = await page({ storage: createFakeStorage() });
+  p.window.Todo.createTaskView(p.document).showError('NOT_A_CODE');
+  assert.equal(p.errorRegion.textContent, 'Something went wrong.');
+});
+
+test('a saved task marked completed is shown as complete', async () => {
+  const storage = createFakeStorage({ [KEY]: JSON.stringify([{ id: 1, title: 'done', completed: true }]) });
+  const p = await page({ storage });
+  assert.deepStrictEqual(rows(p), [{ title: 'done', status: 'complete' }]);
+});
+
+test('CR-8: a warning that does not change is not announced again after every add', async () => {
+  const storage = createFakeStorage();
+  const p = await page({ storage });
+  storage.failures.set = true;
+  clickAdd(p, 'a');
+  const firstNode = p.warningRegion.firstChild;
+  assert.ok(firstNode);
+  clickAdd(p, 'b');
+  assert.equal(p.warningRegion.firstChild, firstNode);
+});
+
+test('FR-15: the failed-save warning goes away after a later save works', async () => {
+  const storage = createFakeStorage();
+  const p = await page({ storage });
+  storage.failures.set = true;
+  clickAdd(p, 'a');
+  assert.match(p.warningRegion.textContent, /could not be saved/);
+  storage.failures.set = false;
+  clickAdd(p, 'b');
+  assert.equal(p.warningRegion.textContent, '');
+  assert.deepStrictEqual(savedTitles(storage), ['a', 'b']);
 });

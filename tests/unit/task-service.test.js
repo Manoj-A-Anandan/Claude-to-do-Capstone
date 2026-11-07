@@ -107,7 +107,7 @@ test('FR-4, FR-16: an empty or blank title is rejected and nothing changes', () 
   const storage = createFakeStorage();
   const service = makeService(storage);
   service.init();
-  for (const value of ['', '   ', '\t', '​​']) {
+  for (const value of ['', '   ', '\t', '\u200B\u200B']) {
     assert.deepStrictEqual(service.addTask(value), { ok: false, code: 'EMPTY' });
   }
   assert.deepStrictEqual(service.getTasks(), []);
@@ -266,4 +266,81 @@ test('NFR-8: the service has no DOM or window dependency', () => {
     'utf8',
   );
   assert.doesNotMatch(source, /\bdocument\b|\bwindow\b|localStorage/);
+});
+
+function makeSwitchableService(storage) {
+  const state = { broken: false };
+  const service = Todo.createTaskService({
+    validator: Todo.createTaskValidator(),
+    store: Todo.createTaskStore(() => {
+      if (state.broken) throw new Error('SecurityError');
+      return storage;
+    }),
+  });
+  return { service, state };
+}
+
+test('CR-1: saved tasks are not duplicated when storage becomes readable again after an outage', () => {
+  const storage = createFakeStorage();
+  const { service, state } = makeSwitchableService(storage);
+  service.init();
+  service.addTask('a');
+
+  state.broken = true;
+  const during = service.addTask('b');
+  assert.equal(during.warning, 'UNAVAILABLE');
+  assert.deepStrictEqual(titles(during.tasks), ['a', 'b']);
+
+  state.broken = false;
+  const after = service.addTask('c');
+  assert.equal(after.warning, null);
+  assert.deepStrictEqual(titles(after.tasks), ['a', 'b', 'c']);
+  assert.deepStrictEqual(ids(after.tasks), [1, 2, 3]);
+  assert.deepStrictEqual(titles(stored(storage)), ['a', 'b', 'c']);
+});
+
+test('CR-1: refresh after an outage keeps the saved task once and the unsaved task once', () => {
+  const storage = createFakeStorage();
+  const { service, state } = makeSwitchableService(storage);
+  service.init();
+  service.addTask('a');
+  state.broken = true;
+  service.addTask('b');
+  state.broken = false;
+  assert.deepStrictEqual(titles(service.refresh().tasks), ['a', 'b']);
+});
+
+test('CR-1: unreadable data followed by a failed save and a later good save keeps each task once', () => {
+  const storage = createFakeStorage({ [KEY]: 'garbage' });
+  const service = makeService(storage);
+  service.init();
+  storage.failures.set = true;
+  service.addTask('x');
+  service.addTask('y');
+  storage.failures.set = false;
+  storage.setItem(KEY, '[]');
+  const result = service.addTask('z');
+  assert.deepStrictEqual(titles(result.tasks), ['x', 'y', 'z']);
+  assert.deepStrictEqual(titles(stored(storage)), ['x', 'y', 'z']);
+});
+
+test('CR-7: refresh reports the warning that applies now', () => {
+  const storage = createFakeStorage();
+  const service = makeService(storage);
+  service.init();
+  assert.equal(service.refresh().warning, null);
+
+  storage.failures.set = true;
+  service.addTask('unsaved');
+  assert.equal(service.refresh().warning, 'SAVE_FAILED');
+
+  storage.failures.set = false;
+  service.addTask('saved');
+  assert.equal(service.refresh().warning, null);
+
+  storage.setItem(KEY, 'garbage');
+  assert.equal(service.refresh().warning, 'UNREADABLE');
+  assert.deepStrictEqual(titles(service.refresh().tasks), ['unsaved', 'saved']);
+
+  assert.equal(makeUnavailableService().refresh().warning, 'UNAVAILABLE');
 });

@@ -8,7 +8,8 @@ const { test } = require('node:test');
 const { createFakeStorage } = require('../helpers/fake-storage');
 const { loadModules } = require('../helpers/load-modules');
 
-const Todo = loadModules({ files: ['task-store.js'] });
+const Todo = loadModules({ files: ['task-validator.js', 'task-store.js'] });
+const { validateTitle } = Todo.createTaskValidator();
 const KEY = 'todo-app.tasks.v1';
 const BACKUP_KEY = 'todo-app.tasks.v1.unreadable';
 
@@ -61,6 +62,7 @@ for (const name of [
   'record-is-null.json',
   'record-is-array.json',
   'completed-is-string.json',
+  'max-safe-id.json',
 ]) {
   test(`FR-15: ${name} is unreadable and the raw value is returned`, () => {
     const raw = fixture(name);
@@ -132,4 +134,34 @@ test('FR-15: backup returns false when only the backup key cannot be written', (
 test('NFR-4: the store never touches the network', () => {
   const source = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'task-store.js'), 'utf8');
   assert.doesNotMatch(source, /fetch|XMLHttpRequest|WebSocket|sendBeacon|EventSource/);
+});
+
+function storeWithValidator(raw) {
+  const storage = createFakeStorage({ [KEY]: raw });
+  return Todo.createTaskStore(() => storage, validateTitle);
+}
+
+for (const name of ['blank-title.json', 'invisible-title.json']) {
+  test(`CR-5: ${name} is unreadable when the validator is supplied`, () => {
+    const raw = fixture(name);
+    assert.deepStrictEqual(storeWithValidator(raw).read(), { status: 'unreadable', tasks: [], raw });
+  });
+}
+
+test('CR-5: a long saved title is kept, not treated as unreadable', () => {
+  const result = storeWithValidator(fixture('long-title.json')).read();
+  assert.equal(result.status, 'ok');
+  assert.equal(result.tasks[0].title.length, 5000);
+});
+
+test('CR-5: a storage shim that returns undefined for a missing key is treated as missing', () => {
+  const store = Todo.createTaskStore(() => ({ getItem: () => undefined }));
+  assert.deepStrictEqual(store.read(), { status: 'missing', tasks: [], raw: null });
+});
+
+test('CR-4: the highest allowed id still leaves room for max + 1', () => {
+  const { store } = storeWith('[{"id":9007199254740990,"title":"a","completed":false}]');
+  const result = store.read();
+  assert.equal(result.status, 'ok');
+  assert.ok(Number.isSafeInteger(result.tasks[0].id + 1));
 });

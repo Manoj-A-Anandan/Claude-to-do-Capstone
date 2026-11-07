@@ -11,12 +11,14 @@
   };
   var FALLBACK_MESSAGE = 'Something went wrong.';
 
+  /** Creates the DOM view: task list, error and warning messages, and screen-reader announcements. */
   function createTaskView(doc) {
     var input = doc.getElementById('title-input');
     var errorRegion = doc.getElementById('title-error');
     var warningRegion = doc.getElementById('warning');
     var confirmationRegion = doc.getElementById('confirmation');
     var list = doc.getElementById('task-list');
+    var shownWarning = null;
 
     function removeChildren(element) {
       while (element.firstChild) element.removeChild(element.firstChild);
@@ -67,10 +69,13 @@
     }
 
     function showWarning(code) {
+      if (code === shownWarning) return;
+      shownWarning = code;
       setMessage(warningRegion, messageFor(code));
     }
 
     function clearWarning() {
+      shownWarning = null;
       removeChildren(warningRegion);
     }
 

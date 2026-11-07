@@ -15,10 +15,17 @@
     });
   }
 
+  function isUsable(status) {
+    return status === 'ok' || status === 'missing';
+  }
+
+  /** Creates the task list service: validates titles, assigns ids, saves, and tracks unsaved tasks. */
   function createTaskService(deps) {
     var validator = deps.validator;
     var store = deps.store;
-    var tasks = [];
+    // The list on screen: saved tasks followed by tasks that could not be saved yet.
+    var displayed = [];
+    // Tasks added since the last successful write; their ids are provisional.
     var pending = [];
 
     function storedPlusPending(stored) {
@@ -31,17 +38,17 @@
       return list;
     }
 
+    function warningFor(status) {
+      if (status === 'unreadable') return 'UNREADABLE';
+      if (status === 'unavailable') return 'UNAVAILABLE';
+      return pending.length > 0 ? 'SAVE_FAILED' : null;
+    }
+
     function init() {
       var result = store.read();
-      var warning = null;
       pending = [];
-      if (result.status === 'ok' || result.status === 'missing') {
-        tasks = result.tasks;
-      } else {
-        tasks = [];
-        warning = result.status === 'unreadable' ? 'UNREADABLE' : 'UNAVAILABLE';
-      }
-      return { tasks: copyTasks(tasks), warning: warning };
+      displayed = isUsable(result.status) ? result.tasks : [];
+      return { tasks: copyTasks(displayed), warning: isUsable(result.status) ? null : warningFor(result.status) };
     }
 
     function addTask(rawTitle) {
@@ -49,13 +56,13 @@
       if (!validation.ok) return { ok: false, code: validation.code };
 
       var current = store.read();
-      var storedIsUsable = current.status === 'ok' || current.status === 'missing';
+      var usable = isUsable(current.status);
       var backupOk = true;
       var base;
-      if (storedIsUsable) {
+      if (usable) {
         base = storedPlusPending(current.tasks);
       } else {
-        base = copyTasks(tasks);
+        base = copyTasks(displayed);
         if (current.status === 'unreadable') backupOk = store.backup(current.raw);
       }
 
@@ -63,29 +70,27 @@
       var next = base.concat([task]);
       var written = store.write(next);
 
-      tasks = next;
+      displayed = next;
       var warning = null;
       if (written.ok) {
         pending = [];
         if (current.status === 'unreadable' && !backupOk) warning = 'BACKUP_FAILED';
       } else {
-        pending = storedIsUsable ? next.slice(current.tasks.length) : next.slice();
+        pending = usable ? next.slice(current.tasks.length) : pending.concat([task]);
         warning = current.status === 'unavailable' ? 'UNAVAILABLE' : 'SAVE_FAILED';
       }
 
-      return { ok: true, task: copyTasks([task])[0], tasks: copyTasks(tasks), warning: warning };
+      return { ok: true, task: copyTasks([task])[0], tasks: copyTasks(displayed), warning: warning };
     }
 
     function refresh() {
       var current = store.read();
-      if (current.status === 'ok' || current.status === 'missing') {
-        tasks = storedPlusPending(current.tasks);
-      }
-      return { tasks: copyTasks(tasks) };
+      if (isUsable(current.status)) displayed = storedPlusPending(current.tasks);
+      return { tasks: copyTasks(displayed), warning: warningFor(current.status) };
     }
 
     function getTasks() {
-      return copyTasks(tasks);
+      return copyTasks(displayed);
     }
 
     return { init: init, addTask: addTask, refresh: refresh, getTasks: getTasks };

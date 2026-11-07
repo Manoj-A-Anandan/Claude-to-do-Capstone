@@ -1,7 +1,7 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 6 Code review   Status: IN_PROGRESS
+Current stage: 7 Verify   Status: IN_PROGRESS
 
 ## Stages
 | Stage | Status | Approved at | Commit |
@@ -12,8 +12,8 @@ Current stage: 6 Code review   Status: IN_PROGRESS
 | 3 Design review | APPROVED | 2026-11-07 | see git log |
 | 4 Impl. planning | APPROVED | 2026-11-07 | see git log |
 | 5 Implementation | APPROVED (P0-P3) | 2026-11-07 | see git log |
-| 6 Code review | IN_PROGRESS | | |
-| 7 Verify | PENDING | | |
+| 6 Code review | APPROVED | 2026-11-07 | see git log |
+| 7 Verify | IN_PROGRESS | | |
 | 8 Pull request | PENDING | | |
 
 ## Decisions (human answers)
@@ -26,6 +26,7 @@ Current stage: 6 Code review   Status: IN_PROGRESS
 - Architecture v3 was not re-reviewed (two-round bound); human accepted at G3.
 
 ## Docs-sync log
+- [6] in sync after review fixes; architecture v4; 174 tests; traceability rebuilt; code-review.md all findings Fixed (no second independent round)
 - [5-P3] final-scope in sync; 17/17 tasks Done; 144 tests pass; npm audit 0; manual checklist created but not run
 - [5-P2] in sync; T-11..T-14 Done; 144 tests pass; all 15 mutations caught
 - [5-P1] in sync; T-01..T-10 Done; traceability has code+test columns; ResourceLoader -> requestInterceptor wording fixed (jsdom 28)

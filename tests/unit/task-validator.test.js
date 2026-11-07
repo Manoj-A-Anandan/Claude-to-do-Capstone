@@ -81,3 +81,11 @@ test('FR-11: a ZWJ family emoji counts as several code points (documented limit)
   assert.equal(validateTitle(FAMILY.repeat(14)).ok, true);
   assert.deepStrictEqual(validateTitle(FAMILY.repeat(15)), { ok: false, code: 'TOO_LONG' });
 });
+
+test('CR-3: a very large invisible-only title is rejected without throwing', () => {
+  assert.deepStrictEqual(validateTitle('\u200B'.repeat(5e6)), { ok: false, code: 'EMPTY' });
+});
+
+test('CR-3: a very large title with a visible character is too long, not a crash', () => {
+  assert.deepStrictEqual(validateTitle('\u200B'.repeat(5e6) + 'a'), { ok: false, code: 'TOO_LONG' });
+});

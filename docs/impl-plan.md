@@ -1,6 +1,6 @@
 # Implementation Plan — Create a TODO Task
 
-Based on: architecture.md v3, requirements.md v2, design-review.md (rounds 1-2, decisions DD-1 to DD-7)   Status: Draft
+Based on: architecture.md v3, requirements.md v2, design-review.md (rounds 1-2, decisions DD-1 to DD-7)   Status: Approved (implementation complete)
 
 ## 1. Task List
 
@@ -8,7 +8,7 @@ Execution order is the table order. Status values: Todo, In progress, Done, Bloc
 
 | ID | Group | Title | Description / done-when | Covers | Component | Depends on | Status | Blocked? |
 |----|-------|-------|--------------------------|--------|-----------|------------|--------|----------|
-| T-01 | P0 | Project scaffold | `package.json` with `"type": "commonjs"`, `"engines": {"node": ">=20"}`, script `"test": "node --test"`, jsdom pinned in `devDependencies`, no `dependencies`; `npm install` succeeds; `npm test` runs (no tests yet) and exits 0; `.gitignore` keeps `node_modules/`. | NFR-8, NFR-10 | project | none | Done | No |
+| T-01 | P0 | Project scaffold | `package.json` with `"type": "commonjs"`, `"engines": {"node": "^20.19.0 || ^22.12.0 || >=24.0.0"}`, script `"test": "node --test"`, jsdom pinned in `devDependencies`, no `dependencies`; `npm install` succeeds; `npm test` runs (no tests yet) and exits 0; `.gitignore` keeps `node_modules/`. | NFR-8, NFR-10 | project | none | Done | No |
 | T-02 | P0 | Test helpers | `tests/helpers/fake-storage.js` (Storage-like object with switchable failures: `getItem` throws, `setItem` throws, throws only for one key, quota failure) and `tests/helpers/load-modules.js` (runs `src/*.js` with `vm.runInThisContext` in order validator, store, service, view, app, resets `globalThis.Todo`, returns it). A helper self-test passes. | NFR-8 | test helpers | T-01 | Done | No |
 | T-03 | P1 | TaskValidator + unit tests | `src/task-validator.js` in the file pattern of architecture section 10. Returns `{ ok, title }` or `{ ok:false, code:'EMPTY'\|'TOO_LONG' }`. Tests: every accept and reject case listed in architecture section 9 (Persian ZWNJ, Devanagari ZWJ, family emoji, subdivision flag, single emoji, ZWSP plus letter accepted; empty, spaces, tabs, NBSP, only ZWJ, only ZWNJ, only U+200B, U+2800, U+3164, mixed rejected), 100 accepted and 101 rejected, family emoji counts as several, trimming (`"  Buy milk  "` becomes `"Buy milk"`). | FR-4, FR-11, FR-13, NFR-8 | TaskValidator | T-02 | Done | No |
 | T-04 | P1 | TaskStore + unit tests + fixtures | `src/task-store.js` with `read()`, `write()`, `backup()`, key `todo-app.tasks.v1`, backup key `todo-app.tasks.v1.unreadable`, all storage access inside try/catch. Fixtures under `tests/fixtures/`: valid, invalid JSON, not an array, missing field, float / negative / zero / duplicate / unsafe ids. Tests: statuses `ok`, `missing`, `unreadable`, `unavailable` (getter throws); write quota failure returns `{ ok:false }`; backup success; backup that throws on the backup key only; no exception ever escapes. | FR-8, FR-9, FR-15, NFR-4, NFR-5, NFR-6, NFR-8 | TaskStore | T-02 | Done | No |

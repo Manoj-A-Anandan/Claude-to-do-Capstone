@@ -1,40 +1,15 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const { afterEach, test } = require('node:test');
+const { test } = require('node:test');
 
 const { createFakeStorage } = require('../helpers/fake-storage');
-const { makePage } = require('../helpers/make-page');
+const { createPageHarness } = require('../helpers/page-harness');
 
 const KEY = 'todo-app.tasks.v1';
-const open = [];
-
-async function page(storage) {
-  const created = await makePage({ storage });
-  open.push(created);
-  return created;
-}
-
-afterEach(() => {
-  while (open.length) {
-    const closing = open.pop();
-    assert.deepStrictEqual(
-      closing.errors.map((error) => error.message),
-      [],
-      'the page reported a jsdom error',
-    );
-    closing.close();
-  }
-});
-
-function add(p, title) {
-  p.input.value = title;
-  p.button.click();
-}
-
-function titles(p) {
-  return Array.from(p.list.querySelectorAll('.task-title')).map((node) => node.textContent);
-}
+const harness = createPageHarness();
+const { add, titles } = harness;
+const page = (storage) => harness.page({ storage });
 
 function storageEvent(p, key) {
   p.window.dispatchEvent(new p.window.StorageEvent('storage', { key }));
@@ -108,4 +83,29 @@ test('FR-17: a storage event does not clear a warning or a validation message', 
   storageEvent(tabA, KEY);
   assert.match(tabA.warningRegion.textContent, /could not be read/);
   assert.deepStrictEqual(titles(tabA), []);
+});
+
+test('CR-7: a storage event clears the warning when another tab repaired the data', async () => {
+  const storage = createFakeStorage({ [KEY]: 'garbage' });
+  const tabA = await page(storage);
+  const tabB = await page(storage);
+  assert.match(tabA.warningRegion.textContent, /could not be read/);
+
+  add(tabB, 'from B');
+  storageEvent(tabA, KEY);
+
+  assert.deepStrictEqual(titles(tabA), ['from B']);
+  assert.equal(tabA.warningRegion.textContent, '');
+});
+
+test('CR-7: a storage event warns when the saved data becomes unreadable', async () => {
+  const storage = createFakeStorage();
+  const tabA = await page(storage);
+  add(tabA, 'mine');
+
+  storage.setItem(KEY, 'garbage');
+  storageEvent(tabA, KEY);
+
+  assert.deepStrictEqual(titles(tabA), ['mine']);
+  assert.match(tabA.warningRegion.textContent, /could not be read/);
 });

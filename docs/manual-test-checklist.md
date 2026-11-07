@@ -31,7 +31,7 @@ Automated tests use jsdom, which is not a real browser. These checks cover what 
 | 14 | Resize to 320 px wide (devtools device mode) and 1920 px: no horizontal scrollbar; Add Task button is at least 44 x 44 px; a 100-character title without spaces wraps | NFR-3 | Not Found | Not Found | Not Found | Not Found |
 | 15 | Keyboard only: Tab reaches the input then the button, a focus outline is visible, Enter in the input adds, no mouse needed | NFR-7 | Not Found | Not Found | Not Found | Not Found |
 | 16 | Screen reader (NVDA or Narrator on Windows, VoiceOver on Mac): submitting an empty title announces the error; adding a task announces "Task added: <title>"; adding the same title twice announces it twice | NFR-7, DD-5 | Not Found | Not Found | Not Found | Not Found |
-| 17 | Contrast: error, warning, button, and status text are readable (automated check measured at least 5.58:1; confirm visually or with a contrast tool) | NFR-7 | Not Found | Not Found | Not Found | Not Found |
+| 17 | Contrast: error, warning, button, and status text are readable (`tests/unit/contrast.test.js` checks the text colour pairs in the stylesheet are at least 4.5:1, lowest 6.39:1; confirm visually, including focus outlines and the error and warning boxes) | NFR-7 | Not Found | Not Found | Not Found | Not Found |
 | 18 | Load 500 tasks (paste a 500-item JSON array into the storage key, reload), then add one: the new task appears with no visible delay | NFR-2 | Not Found | Not Found | Not Found | Not Found |
 | 19 | Move the folder, open `index.html` from the new location: note whether saved tasks appear (Chrome shares storage across local files; Firefox scopes it per file) | FR-9 | Not Found | Not Found | Not Found | Not Found |
 

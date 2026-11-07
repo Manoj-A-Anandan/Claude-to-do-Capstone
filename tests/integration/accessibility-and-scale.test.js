@@ -1,38 +1,14 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const { afterEach, test } = require('node:test');
+const { test } = require('node:test');
 
 const { createFakeStorage } = require('../helpers/fake-storage');
-const { makePage } = require('../helpers/make-page');
+const { createPageHarness } = require('../helpers/page-harness');
+const { css, ruleDeclarations } = require('../helpers/css-rule');
 
 const KEY = 'todo-app.tasks.v1';
-const open = [];
-
-async function page(options) {
-  const created = await makePage(options);
-  open.push(created);
-  return created;
-}
-
-afterEach(() => {
-  while (open.length) {
-    const closing = open.pop();
-    assert.deepStrictEqual(
-      closing.errors.map((error) => error.message),
-      [],
-      'the page reported a jsdom error',
-    );
-    closing.close();
-  }
-});
-
-function add(p, title) {
-  p.input.value = title;
-  p.button.click();
-}
+const { page, add } = createPageHarness();
 
 test('NFR-7: live regions exist in the initial HTML with the right roles', async () => {
   const p = await page({ storage: createFakeStorage() });
@@ -83,11 +59,10 @@ test('NFR-7: the confirmation region is hidden visually, not removed from the ac
   assert.equal(p.confirmationRegion.getAttribute('aria-hidden'), null);
   assert.ok(p.confirmationRegion.classList.contains('visually-hidden'));
 
-  const css = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'styles.css'), 'utf8');
-  const rule = css.match(/\.visually-hidden\s*\{([^}]*)\}/);
-  assert.ok(rule, 'visually-hidden rule exists');
-  assert.match(rule[1], /clip/);
-  assert.doesNotMatch(rule[1], /display\s*:\s*none|visibility\s*:\s*hidden/);
+  const rule = ruleDeclarations('.visually-hidden');
+  assert.ok(rule.clip);
+  assert.equal(rule.display, undefined);
+  assert.equal(rule.visibility, undefined);
 });
 
 test('NFR-7: the input has a label and nothing removes the controls from the tab order', async () => {
@@ -98,17 +73,22 @@ test('NFR-7: the input has a label and nothing removes the controls from the tab
   assert.equal(p.list.getAttribute('aria-label'), 'Tasks');
 });
 
-test('NFR-3: the page declares a responsive viewport and wraps long unbroken titles', async () => {
+test('NFR-3: viewport meta, 44 px targets on the button and input, and wrapping of long titles', async () => {
   const p = await page({ storage: createFakeStorage() });
   const viewport = p.document.querySelector('meta[name="viewport"]');
   assert.match(viewport.getAttribute('content'), /width=device-width/);
 
-  const css = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'styles.css'), 'utf8');
-  assert.match(css, /overflow-wrap:\s*anywhere/);
-  assert.match(css, /min-height:\s*2\.75rem/);
+  const button = ruleDeclarations('button');
+  assert.equal(button['min-height'], '2.75rem');
+  assert.equal(button['min-width'], '2.75rem');
+  assert.equal(ruleDeclarations('input[type="text"]')['min-height'], '2.75rem');
+  assert.equal(ruleDeclarations('.task-title')['overflow-wrap'], 'anywhere');
+  assert.equal(ruleDeclarations('.message')['overflow-wrap'], 'anywhere');
+  assert.equal(ruleDeclarations('.app')['max-width'], '36rem');
+  assert.match(css, /box-sizing:\s*border-box/);
 });
 
-test('NFR-2: a 500-task list renders and a new task is added quickly', async (t) => {
+test('NFR-2: smoke test, a 500-task list renders and a new task is added (timing is only logged, bounded loosely)', async (t) => {
   const tasks = [];
   for (let id = 1; id <= 500; id += 1) tasks.push({ id, title: `Task number ${id}`, completed: false });
   const storage = createFakeStorage({ [KEY]: JSON.stringify(tasks) });

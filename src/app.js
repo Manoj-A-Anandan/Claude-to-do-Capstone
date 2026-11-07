@@ -1,21 +1,31 @@
 (function (global) {
   'use strict';
 
+  /** Wires validator, store, service and view to the page and starts listening for events. */
   function startApp(options) {
     var doc = options.document;
     var win = doc.defaultView;
     var Todo = global.Todo;
 
-    var store = Todo.createTaskStore(options.getStorage);
-    var service = Todo.createTaskService({ validator: Todo.createTaskValidator(), store: store });
+    var validator = Todo.createTaskValidator();
+    var store = Todo.createTaskStore(options.getStorage, validator.validateTitle);
+    var service = Todo.createTaskService({ validator: validator, store: store });
     var view = Todo.createTaskView(doc);
 
     var form = doc.getElementById('task-form');
     var input = doc.getElementById('title-input');
 
+    function applyWarning(code) {
+      if (code) {
+        view.showWarning(code);
+      } else {
+        view.clearWarning();
+      }
+    }
+
     var initial = service.init();
     view.renderTasks(initial.tasks);
-    if (initial.warning) view.showWarning(initial.warning);
+    applyWarning(initial.warning);
 
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -30,11 +40,7 @@
       view.clearError();
       view.focusInput();
       view.announceAdded(result.task.title);
-      if (result.warning) {
-        view.showWarning(result.warning);
-      } else {
-        view.clearWarning();
-      }
+      applyWarning(result.warning);
     });
 
     input.addEventListener('input', function () {
@@ -43,7 +49,9 @@
 
     win.addEventListener('storage', function (event) {
       if (event.key === null || event.key === store.key) {
-        view.renderTasks(service.refresh().tasks);
+        var refreshed = service.refresh();
+        view.renderTasks(refreshed.tasks);
+        applyWarning(refreshed.warning);
       }
     });
 

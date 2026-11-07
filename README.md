@@ -15,7 +15,7 @@ Open `index.html` in a current Chrome, Edge, Firefox, or Safari. You can double-
 - Saves to `localStorage` under the key `todo-app.tasks.v1`.
 - Keeps working if local storage is blocked or its data is unreadable: a warning is shown and tasks stay in memory. Unreadable data is copied to `todo-app.tasks.v1.unreadable` before it is replaced.
 - Works in several tabs: a new task is added to the saved list, not over it, and other tabs update.
-- Keyboard and screen-reader friendly: labelled input, error announced as an alert, "Task added: ..." announced after each add.
+- Built for keyboard and screen-reader use: labelled input, error announced as an alert, "Task added: ..." announced after each add. Automated tests check the markup; checking with real assistive technology is on the manual checklist and has not been done yet.
 
 Tasks belong to the browser and to the file's location. Opening the page from a different folder, a different browser, or a private window shows a different (possibly empty) list. Moving the folder can make saved tasks seem lost.
 
