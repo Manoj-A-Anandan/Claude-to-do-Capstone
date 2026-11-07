@@ -1,15 +1,15 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 2 Architecture   Status: IN_PROGRESS
+Current stage: 3 Design review   Status: IN_PROGRESS
 
 ## Stages
 | Stage | Status | Approved at | Commit |
 |-------|--------|-------------|--------|
 | 0 Preflight | APPROVED | 2026-11-07 | 53f6243 (scaffold on main) |
 | 1 Requirements | APPROVED | 2026-11-07 | see git log |
-| 2 Architecture | IN_PROGRESS | | |
-| 3 Design review | PENDING | | |
+| 2 Architecture | APPROVED | 2026-11-07 | see git log |
+| 3 Design review | IN_PROGRESS | | |
 | 4 Impl. planning | PENDING | | |
 | 5 Implementation | PENDING | | |
 | 6 Code review | PENDING | | |
@@ -23,4 +23,5 @@ Current stage: 2 Architecture   Status: IN_PROGRESS
 ## Assumptions accepted
 
 ## Docs-sync log
+- [2] in sync; 16 FR + 10 NFR covered in architecture §12; traceability rebuilt
 - [1] in sync; 9 FR + 5 NFR from story covered (FR-1..9, NFR-1..5), 7 added
