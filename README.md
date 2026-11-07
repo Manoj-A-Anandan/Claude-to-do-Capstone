@@ -28,7 +28,9 @@ npm install
 npm test
 ```
 
-`npm test` runs the Node test runner over unit tests (validator, store, service) and jsdom page tests that load the real `index.html` and scripts. jsdom is a development dependency only. Real-browser checks (layout, Enter key, screen readers, `file://` behaviour) are listed in [docs/manual-test-checklist.md](docs/manual-test-checklist.md).
+`npm test` runs the Node test runner over unit tests (validator, store, service) and jsdom page tests that load the real `index.html` and scripts. jsdom is a development dependency only. `node tests/browser/browser-smoke.js` drives headless Edge or Chrome (no extra packages) against `index.html` opened from `file://`: real clicks and Enter key, validation, reload, two tabs, blocked storage, layout at 320 and 1920 px. It prints PASS/FAIL per check, exits non-zero on failure, and skips with a message if no browser is found. It is not part of `npm test`.
+
+Checks that still need a person (Firefox, Safari, screen readers, a real private window) are listed in [docs/manual-test-checklist.md](docs/manual-test-checklist.md).
 
 ## Project structure
 
@@ -41,7 +43,7 @@ src/
   task-service.js          task list, ids, pending unsaved tasks (no DOM)
   task-view.js             DOM rendering and messages (textContent only)
   app.js                   wiring: Todo.startApp
-tests/                     helpers, unit, integration, fixtures
+tests/                     helpers, unit, integration (jsdom), browser (real Edge/Chrome script), fixtures
 docs/                      requirements, architecture, design review, plan, reviews, checklist
 ```
 

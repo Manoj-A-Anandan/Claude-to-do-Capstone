@@ -12,4 +12,4 @@ All notable changes are recorded here. The format follows [Keep a Changelog](htt
 - Several open tabs stay consistent: new tasks are merged into the saved list and other tabs update.
 - Screen-reader announcements for validation errors and for each added task.
 - Responsive layout for desktop and mobile widths.
-- Automated tests (unit and jsdom page tests) and a manual browser checklist.
+- Automated tests (unit and jsdom page tests), a headless Edge/Chrome smoke script, and a manual browser checklist.

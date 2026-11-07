@@ -77,7 +77,7 @@ test('DD-2: the page has no Content-Security-Policy, inline handlers, or inline 
 
 test('DR-23: every source file uses the same opening line and attaches to Todo', () => {
   for (const name of sourceFiles) {
-    const source = read(name);
+    const source = read(name).replace(/\r\n/g, '\n');
     assert.ok(source.startsWith("(function (global) {\n  'use strict';"), `${name} opening`);
     assert.ok(
       source.trimEnd().endsWith("})(typeof globalThis !== 'undefined' ? globalThis : this);"),

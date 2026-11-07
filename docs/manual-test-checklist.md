@@ -1,8 +1,8 @@
 # Manual Test Checklist — Create a TODO Task
 
-Based on: architecture.md v3, impl-plan.md T-15   Status: Not run
+Based on: architecture.md v4, impl-plan.md T-15   Status: Not run
 
-Automated tests use jsdom, which is not a real browser. These checks cover what it cannot: real layout, the real Enter key, `file://` storage behaviour, and screen readers. The human fills in this table. A cell left as `Not Found` was not run and is listed as a known limitation in the pull request.
+Automated tests use jsdom, which is not a real browser. A headless-browser script (`node tests/browser/browser-smoke.js`) has already run many of these checks in Edge and Chrome; see the "Real-browser findings" section of docs/verification-report.md. It does not replace a human run. These checks cover what jsdom cannot: real layout, the real Enter key, `file://` storage behaviour, and screen readers. The human fills in this table. A cell left as `Not Found` was not run and is listed as a known limitation in the pull request.
 
 ## How to run
 
