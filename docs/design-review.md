@@ -152,7 +152,7 @@ Counts for Round 2 (new findings): Blocker 0, High 1 (DR-17), Medium 3 (DR-18, D
 | DR-17 | `pending` list; displayed list = stored + pending with ids above the highest stored id; cleared only after a successful write; `refresh()` keeps it; tests listed (§4, §5, §9) | 3 |
 | DR-18 | Exact jsdom harness: `ResourceLoader` mapping `http://localhost/` to repo files, `beforeParse` storage (§9) | 3 |
 | DR-19 | Synthetic `StorageEvent` test; race reworded as bounded, not eliminated (§5, §9, §11) | 3 |
-| DR-20 | `BACKUP_FAILED` warning, softened `UNREADABLE` text; proceed with the add (human to confirm, proposed default) (§4, §5) | 3 |
+| DR-20 | `BACKUP_FAILED` warning, softened `UNREADABLE` text; proceed with the add (confirmed by human, DD-7) (§4, §5) | 3 |
 | DR-21 | Warning lifecycle: result carries current warning, `null` clears; `UNAVAILABLE` never replaced by `SAVE_FAILED` (§4, §5) | 3 |
 | DR-22 | `aria-describedby="title-error"`; replace-children announcements; visually-hidden class (§4) | 3 |
 | DR-23 | Namespace `Todo.create*` / `Todo.startApp`; exact file opening line; `preventDefault` wording; README in tree (§3, §4, §7, §10) | 3 |
