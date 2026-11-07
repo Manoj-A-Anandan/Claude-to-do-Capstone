@@ -149,8 +149,8 @@ src/
   app.js
 tests/
   helpers/         load-modules.js, make-page.js, fake-storage.js
-  unit/            task-validator.test.js, task-store.test.js, task-service.test.js
-  integration/     app.test.js, static-checks.test.js
+  unit/            task-validator.test.js, task-store.test.js, task-service.test.js, helpers.test.js
+  integration/     app.test.js, cross-tab.test.js, accessibility-and-scale.test.js, static-checks.test.js
   fixtures/        stored-data samples (valid, corrupt, bad ids, 500 tasks)
 docs/manual-test-checklist.md
 package.json       "type": "commonjs", "engines": { "node": ">=20" }, scripts: "test": "node --test"; devDependencies: jsdom (pinned); no dependencies

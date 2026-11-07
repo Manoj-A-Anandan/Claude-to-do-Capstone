@@ -1,6 +1,6 @@
 # Traceability Matrix
 
-Updated after stage: 5 (Implementation, groups P0-P2)
+Updated after stage: 5 (Implementation complete, groups P0-P3)
 
 ## Story → Requirement
 
@@ -43,5 +43,5 @@ Updated after stage: 5 (Implementation, groups P0-P2)
 | NFR-6 | TaskView, TaskStore (validation on load) | T-04, T-07, T-10, T-11 | src/task-store.js, src/task-view.js | task-store.test.js, app.test.js, static-checks.test.js | Implemented and tested |
 | NFR-7 | index.html, TaskView, styles.css | T-06, T-07, T-14, T-15 | src/task-view.js, index.html, src/styles.css | accessibility-and-scale.test.js | Automated proxy only; manual check (T-15) pending |
 | NFR-8 | TaskValidator, TaskStore, TaskService (DOM-free); test helpers | T-01, T-02, T-03, T-04, T-05, T-09, T-17 | src/task-validator.js, src/task-store.js, src/task-service.js | task-service.test.js | Implemented and tested |
-| NFR-9 | Plain ES2018 syntax (Unicode property escapes), no experimental APIs | T-15 | Not Found | Not Found | Pending |
-| NFR-10 | File pattern, project structure, package.json | T-01, T-11, T-16, T-17 | Not Found | static-checks.test.js | Pending |
+| NFR-9 | Plain ES2018 syntax (Unicode property escapes), no experimental APIs | T-15 | src/*.js, index.html | Not Found | Automated proxy only; manual check (T-15) pending |
+| NFR-10 | File pattern, project structure, package.json | T-01, T-11, T-16, T-17 | package.json, index.html, src/*.js | static-checks.test.js | Implemented and tested |
