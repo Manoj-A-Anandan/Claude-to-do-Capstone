@@ -1,7 +1,7 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 5 Implementation (P2)   Status: IN_PROGRESS
+Current stage: 5 Implementation (P3)   Status: IN_PROGRESS
 
 ## Stages
 | Stage | Status | Approved at | Commit |
@@ -26,6 +26,7 @@ Current stage: 5 Implementation (P2)   Status: IN_PROGRESS
 - Architecture v3 was not re-reviewed (two-round bound); human accepted at G3.
 
 ## Docs-sync log
+- [5-P2] in sync; T-11..T-14 Done; 144 tests pass; all 15 mutations caught
 - [5-P1] in sync; T-01..T-10 Done; traceability has code+test columns; ResourceLoader -> requestInterceptor wording fixed (jsdom 28)
 - [4] in sync; 17 FR + 10 NFR covered by 17 tasks; traceability has Task column
 - [3] in sync after architecture v3 + requirements v2 (17 FR + 10 NFR covered); design-review.md round-2 statuses updated; v3 not re-reviewed (2-round bound)
