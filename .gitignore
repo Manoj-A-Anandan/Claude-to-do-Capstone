@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.sdlc/logs/
+.sdlc/pending-doc-sync.txt
+.sdlc/archive/
+user-story/_extracted.md
+__pycache__/
+node_modules/
+.venv/
+coverage/
+install.cmd
+.codemie/
