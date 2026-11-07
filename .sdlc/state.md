@@ -1,7 +1,7 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 3 Design review   Status: IN_PROGRESS
+Current stage: 4 Implementation planning   Status: IN_PROGRESS
 
 ## Stages
 | Stage | Status | Approved at | Commit |
@@ -9,8 +9,8 @@ Current stage: 3 Design review   Status: IN_PROGRESS
 | 0 Preflight | APPROVED | 2026-11-07 | 53f6243 (scaffold on main) |
 | 1 Requirements | APPROVED | 2026-11-07 | see git log |
 | 2 Architecture | APPROVED | 2026-11-07 | see git log |
-| 3 Design review | IN_PROGRESS | | |
-| 4 Impl. planning | PENDING | | |
+| 3 Design review | APPROVED | 2026-11-07 | see git log |
+| 4 Impl. planning | IN_PROGRESS | | |
 | 5 Implementation | PENDING | | |
 | 6 Code review | PENDING | | |
 | 7 Verify | PENDING | | |
@@ -20,8 +20,12 @@ Current stage: 3 Design review   Status: IN_PROGRESS
 - [1] Stack: vanilla HTML/CSS/JS. Enter submits; max 100 chars. Duplicates allowed, newest at bottom, titles trimmed. Storage failure: warn and continue in memory.
 - [0] Bootstrap: init git, push scaffold to main; commit scaffold only (install.cmd, .codemie/ ignored).
 
+- [3] DD-1 two tabs in scope; DD-2 no CSP; DD-3 backup then overwrite; DD-4 code points; DD-5 spoken confirmation; DD-6 reject invisible-only; DD-7 add anyway with BACKUP_FAILED if backup fails; requirements v2 approved.
+
 ## Assumptions accepted
+- Architecture v3 was not re-reviewed (two-round bound); human accepted at G3.
 
 ## Docs-sync log
+- [3] in sync after architecture v3 + requirements v2 (17 FR + 10 NFR covered); design-review.md round-2 statuses updated; v3 not re-reviewed (2-round bound)
 - [2] in sync; 16 FR + 10 NFR covered in architecture §12; traceability rebuilt
 - [1] in sync; 9 FR + 5 NFR from story covered (FR-1..9, NFR-1..5), 7 added
