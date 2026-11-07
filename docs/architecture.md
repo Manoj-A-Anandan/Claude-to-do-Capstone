@@ -23,7 +23,7 @@ Decisions taken in design review (human, 2026-11-07): two tabs are in scope (DD-
 | Length enforcement in the UI | HTML `maxlength`; validation in code | Validation in code only | `maxlength` would stop the 101st character from being typed, so the FR-11 message would never appear. |
 | Cross-tab consistency | In-memory list written back whole; read-modify-write on each add; locks | Read-modify-write on each add, plus a `storage` event refresh | Human decision (DD-1). See section 5. Web Locks would remove the remaining race but add complexity for a tiny window. |
 | Content-Security-Policy | Meta tag CSP; none | None | Human decision (DD-2). `'self'` matching on `file://` is unverified, no requirement needs a CSP, and a mismatch would blank the page. NFR-6 is met by `textContent`. |
-| Node version | any; 20 or later | `engines.node >= 20` | Required for current jsdom and `node:test`. CI is out of scope for this story (`Not Found`); tests run locally with `npm test`. |
+| Node version | any; 20 or later | `engines.node` is `^20.19.0 \|\| ^22.12.0 \|\| >=24.0.0`, matching jsdom 28.1.0 (pinned exactly) | Required for jsdom and `node:test`. Newer jsdom (31) needs Node 22.22+, so 28.1.0 keeps Node 20.19+ supported. CI is out of scope for this story (`Not Found`); tests run locally with `npm test`. |
 
 ## 3. Component Diagram
 

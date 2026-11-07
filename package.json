@@ -1,0 +1,16 @@
+{
+  "name": "todo-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Single-page TODO app: create a task and keep it in browser local storage.",
+  "type": "commonjs",
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "jsdom": "28.1.0"
+  }
+}
