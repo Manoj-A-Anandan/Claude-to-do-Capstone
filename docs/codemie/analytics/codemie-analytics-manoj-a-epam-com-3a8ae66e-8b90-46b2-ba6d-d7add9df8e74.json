@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "generatedAt": "2026-11-15T11:47:18.338Z",
+    "rangeLabel": "all",
+    "agents": [
+      "claude"
+    ],
+    "projectFilter": "all",
+    "totals": {
+      "sessions": 1,
+      "durationMs": 136135,
+      "turns": 6,
+      "files": 2,
+      "netLines": 0,
+      "toolCallsTotal": 8,
+      "toolSuccessRate": 87.5,
+      "totalCostUSD": 0.23136800000000002,
+      "cacheReadCostUSD": 0.019796,
+      "pricedSessions": 1
+    },
+    "unpricedModels": [],
+    "estimatedModels": [],
+    "localModels": [],
+    "coverage": [
+      {
+        "agentName": "claude",
+        "total": 1,
+        "priced": 1,
+        "withLog": 1
+      }
+    ],
+    "userEmail": "manoj_a@epam.com",
+    "periodStart": "2026-11-15T11:44:56.108Z",
+    "periodEnd": "2026-11-15T11:47:12.243Z"
+  },
+  "sessions": [
+    {
+      "sessionId": "3a8ae66e-8b90-46b2-ba6d-d7add9df8e74",
+      "agentName": "claude",
+      "provider": "ai-run-sso",
+      "title": "The command below was run directly in Claude Code, not sent to you as a request, and its output goes straight to the user. It's recorded here as context for later messages.",
+      "project": "C:\\Users\\ManojA\\Desktop\\Epam Learning tasks\\Capstones\\Claude",
+      "branch": "feature/create-todo-task",
+      "startTime": 1794743096108,
+      "durationMs": 136135,
+      "turns": 6,
+      "fileOps": 2,
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "linesModified": 0,
+      "netLines": 0,
+      "filesChanged": 0,
+      "filesWritten": 0,
+      "filesEdited": 0,
+      "toolCallsTotal": 8,
+      "toolCallsSuccess": 7,
+      "toolCallsFailure": 1,
+      "models": [
+        "claude-sonnet-5-5"
+      ],
+      "languages": [
+        "markdown"
+      ],
+      "tools": [
+        {
+          "toolName": "Bash",
+          "totalCalls": 4,
+          "successCount": 4,
+          "failureCount": 0,
+          "successRate": 100
+        },
+        {
+          "toolName": "Read",
+          "totalCalls": 2,
+          "successCount": 2,
+          "failureCount": 0,
+          "successRate": 100
+        },
+        {
+          "toolName": "Glob",
+          "totalCalls": 1,
+          "successCount": 1,
+          "failureCount": 0,
+          "successRate": 100
+        },
+        {
+          "toolName": "Edit",
+          "totalCalls": 1,
+          "successCount": 0,
+          "failureCount": 1,
+          "successRate": 0
+        }
+      ],
+      "tokens": {
+        "input": 12,
+        "output": 1910,
+        "cacheRead": 197960,
+        "cacheCreation": 48112,
+        "cacheCreation1h": 48112,
+        "total": 247994
+      },
+      "costUSD": 0.23136800000000002,
+      "cacheReadCostUSD": 0.019796,
+      "perModelCost": [
+        {
+          "model": "claude-sonnet-5-5",
+          "tokens": {
+            "input": 12,
+            "output": 1910,
+            "cacheRead": 197960,
+            "cacheCreation": 48112,
+            "cacheCreation1h": 48112,
+            "total": 247994
+          },
+          "costUSD": 0.23136800000000002,
+          "unpriced": false
+        }
+      ],
+      "hadLog": true,
+      "agentSessionFile": "C:\\Users\\ManojA\\.claude\\projects\\C--Users-ManojA-Desktop-Epam-Learning-tasks-Capstones-Claude\\775cc5e5-d791-4cc0-8172-7cc0a178151d.jsonl",
+      "costSeries": [
+        {
+          "t": 1794743145067,
+          "cost": 0.143754,
+          "tokens": 35566
+        },
+        {
+          "t": 1794743149920,
+          "cost": 0.1528655,
+          "tokens": 72130
+        },
+        {
+          "t": 1794743152538,
+          "cost": 0.1653019,
+          "tokens": 110320
+        },
+        {
+          "t": 1794743165044,
+          "cost": 0.1877992,
+          "tokens": 152384
+        },
+        {
+          "t": 1794743172313,
+          "cost": 0.2167629,
+          "tokens": 199502
+        },
+        {
+          "t": 1794743187580,
+          "cost": 0.23136800000000002,
+          "tokens": 247994
+        }
+      ],
+      "dispatches": [
+        {
+          "kind": "command",
+          "name": "list-agents",
+          "start": 1794743104144,
+          "durationMs": 0,
+          "id": "command:e0578eca-d37f-4136-b0c7-7c9605fb326e:0",
+          "ownerAgentId": "3a8ae66e-8b90-46b2-ba6d-d7add9df8e74",
+          "relationshipStatus": "root",
+          "elapsedMs": 0,
+          "status": "completed",
+          "attributionStatus": "unavailable",
+          "attributionScope": "owner-window"
+        }
+      ],
+      "costSource": "native-estimate",
+      "costBasis": "standard-api-tokens",
+      "dispatchesComplete": true,
+      "rootOwnCostUSD": 0.23136800000000002,
+      "unlinkedCostUSD": 0,
+      "unlinkedAgentIds": [],
+      "observedEnd": 1794743232243,
+      "rootOwnTokens": {
+        "input": 12,
+        "output": 1910,
+        "cacheRead": 197960,
+        "cacheCreation": 48112,
+        "cacheCreation1h": 48112,
+        "total": 247994
+      },
+      "unlinkedTokens": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheCreation": 0,
+        "cacheCreation1h": 0,
+        "total": 0
+      },
+      "modelTimeline": [
+        {
+          "t": 1794743145067,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.143754,
+          "tokens": 35566
+        },
+        {
+          "t": 1794743149920,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0091115,
+          "tokens": 36564
+        },
+        {
+          "t": 1794743152538,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0124364,
+          "tokens": 38190
+        },
+        {
+          "t": 1794743165044,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0224973,
+          "tokens": 42064
+        },
+        {
+          "t": 1794743172313,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0289637,
+          "tokens": 47118
+        },
+        {
+          "t": 1794743187580,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0146051,
+          "tokens": 48492
+        }
+      ],
+      "routedTurnsPct": 0,
+      "skillInvocations": [],
+      "agentInvocations": [],
+      "commandInvocations": [
+        {
+          "name": "list-agents",
+          "totalCalls": 1,
+          "successCount": 1,
+          "failureCount": 0
+        }
+      ],
+      "sessionSource": "Pure chat"
+    }
+  ]
+}

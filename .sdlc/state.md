@@ -1,7 +1,7 @@
 # SDLC State
 Story: Create a TODO Task (user-story/user-story-create-todo-task.md)
 Slug: create-todo-task   Branch: feature/create-todo-task
-Current stage: 8 Pull request   Status: APPROVED (G8), publishing
+Current stage: 8 Pull request   Status: COMPLETE (PR #1 open, not merged)
 
 ## Stages
 | Stage | Status | Approved at | Commit |

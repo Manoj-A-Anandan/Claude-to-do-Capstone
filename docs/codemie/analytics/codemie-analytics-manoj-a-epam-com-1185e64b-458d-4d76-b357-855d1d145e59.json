@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "generatedAt": "2026-11-16T07:01:01.203Z",
+    "rangeLabel": "all",
+    "agents": [
+      "claude"
+    ],
+    "projectFilter": "all",
+    "totals": {
+      "sessions": 1,
+      "durationMs": 11654,
+      "turns": 2,
+      "files": 0,
+      "netLines": 0,
+      "toolCallsTotal": 1,
+      "toolSuccessRate": 100,
+      "totalCostUSD": 0.1072802,
+      "cacheReadCostUSD": 0.0025702000000000003,
+      "pricedSessions": 1
+    },
+    "unpricedModels": [],
+    "estimatedModels": [],
+    "localModels": [],
+    "coverage": [
+      {
+        "agentName": "claude",
+        "total": 1,
+        "priced": 1,
+        "withLog": 1
+      }
+    ],
+    "userEmail": "manoj_a@epam.com",
+    "periodStart": "2026-11-16T07:00:34.917Z",
+    "periodEnd": "2026-11-16T07:00:46.571Z"
+  },
+  "sessions": [
+    {
+      "sessionId": "1185e64b-458d-4d76-b357-855d1d145e59",
+      "agentName": "claude",
+      "provider": "ai-run-sso",
+      "title": "Inspect the current repository root and report the current Git branch. Do not modify any files. Return only the findings.",
+      "project": "C:\\Users\\ManojA\\Desktop\\Epam Learning tasks\\Capstones\\Claude",
+      "branch": "feature/create-todo-task",
+      "startTime": 1794812434917,
+      "durationMs": 11654,
+      "turns": 2,
+      "fileOps": 0,
+      "linesAdded": 0,
+      "linesRemoved": 0,
+      "linesModified": 0,
+      "netLines": 0,
+      "filesChanged": 0,
+      "filesWritten": 0,
+      "filesEdited": 0,
+      "toolCallsTotal": 1,
+      "toolCallsSuccess": 1,
+      "toolCallsFailure": 0,
+      "models": [
+        "claude-sonnet-5-5"
+      ],
+      "languages": [],
+      "tools": [
+        {
+          "toolName": "Bash",
+          "totalCalls": 1,
+          "successCount": 1,
+          "failureCount": 0,
+          "successRate": 100
+        }
+      ],
+      "tokens": {
+        "input": 4,
+        "output": 143,
+        "cacheRead": 25702,
+        "cacheCreation": 25818,
+        "cacheCreation1h": 25818,
+        "total": 51667
+      },
+      "costUSD": 0.1072802,
+      "cacheReadCostUSD": 0.0025702000000000003,
+      "perModelCost": [
+        {
+          "model": "claude-sonnet-5-5",
+          "tokens": {
+            "input": 4,
+            "output": 143,
+            "cacheRead": 25702,
+            "cacheCreation": 25818,
+            "cacheCreation1h": 25818,
+            "total": 51667
+          },
+          "costUSD": 0.1072802,
+          "unpriced": false
+        }
+      ],
+      "hadLog": true,
+      "agentSessionFile": "C:\\Users\\ManojA\\.claude\\projects\\C--Users-ManojA-Desktop-Epam-Learning-tasks-Capstones-Claude\\3e23f7ee-1f80-48dd-9c16-8a00cb37ca2d.jsonl",
+      "costSeries": [
+        {
+          "t": 1794812440489,
+          "cost": 0.10348199999999999,
+          "tokens": 25771
+        },
+        {
+          "t": 1794812444035,
+          "cost": 0.10728019999999999,
+          "tokens": 51667
+        }
+      ],
+      "costSource": "native-estimate",
+      "costBasis": "standard-api-tokens",
+      "dispatchesComplete": true,
+      "rootOwnCostUSD": 0.1072802,
+      "unlinkedCostUSD": 0,
+      "unlinkedAgentIds": [],
+      "observedEnd": 1794812446571,
+      "rootOwnTokens": {
+        "input": 4,
+        "output": 143,
+        "cacheRead": 25702,
+        "cacheCreation": 25818,
+        "cacheCreation1h": 25818,
+        "total": 51667
+      },
+      "unlinkedTokens": {
+        "input": 0,
+        "output": 0,
+        "cacheRead": 0,
+        "cacheCreation": 0,
+        "cacheCreation1h": 0,
+        "total": 0
+      },
+      "modelTimeline": [
+        {
+          "t": 1794812440489,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.103482,
+          "tokens": 25771
+        },
+        {
+          "t": 1794812444035,
+          "model": "claude-sonnet-5-5",
+          "costUSD": 0.0037982,
+          "tokens": 25896
+        }
+      ],
+      "routedTurnsPct": 0,
+      "skillInvocations": [],
+      "agentInvocations": [],
+      "commandInvocations": [],
+      "sessionSource": "Pure chat"
+    }
+  ]
+}
