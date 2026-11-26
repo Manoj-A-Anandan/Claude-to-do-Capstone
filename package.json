@@ -8,7 +8,8 @@
     "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "test:sdlc": "node --test scripts/sdlc/retry-ledger.check.js scripts/sdlc/pr-body.check.js scripts/sdlc/docs-consistency.check.js"
   },
   "devDependencies": {
     "jsdom": "28.1.0"

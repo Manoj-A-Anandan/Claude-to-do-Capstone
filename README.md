@@ -84,20 +84,27 @@ flowchart LR
 
 Every `Gn` is a human approval. Each approved stage is committed on `feature/<slug>`.
 
-### What is in `.github/`
+### Retries, approvals and AI disclosure
+
+- **Retry:** every agent-executed stage gets at most 2 attempts (1 initial + 1 retry with the failure reason passed to the agent). A second failure stops the run as `BLOCKED` with the exact reason; later stages never start. Evidence is in `.sdlc/retry-ledger.json` and `.sdlc/retry-log.md`. A human **Request changes** is a revision, not a failure: the owner revises and the same gate is shown again.
+- **AI disclosure:** every PR body starts with an "AI-Assisted Pull Request" section (checked by `scripts/sdlc/check-pr-body.js`). The workflow never merges a PR.
+- Full stage-by-stage reference (18 stages, inputs, outputs, validation, failure handling): [docs/sdlc/orchestrator.md](docs/sdlc/orchestrator.md). Overview and implementation report: [docs/sdlc/README.md](docs/sdlc/README.md).
+
+### What is in `.claude/`
 
 | Path | Contents |
 |------|----------|
-| `copilot-instructions.md` | Repo-wide rules, stage/artifact table |
 | `agents/` | `sdlc-orchestrator`, `requirements-analyst`, `architect`, `design-reviewer`, `implementation-planner`, `implementer`, `code-reviewer`, `verifier`, `docs-sync`, `pr-creator` |
 | `instructions/` | `security`, `documentation`, `code`, `testing`, `agent-collaboration` (scoped with `applyTo`) |
 | `prompts/` | `run-sdlc`, `resume-sdlc`, `sync-docs` |
-| `skills/` | `user-story-intake`, `docs-sync-check`, `pr-authoring` |
-| `hooks/` | Guard rails (block force-push, secrets, `.env` writes), docs-drift marker, session logging |
+| `skills/` | `requirements-engineering`, `architecture-design`, `js-implementation`, `code-review-checklist`, `testing-practices`, `verification-practices`, `user-story-intake`, `docs-sync-check`, `pr-authoring` |
+| `hooks/` | Guard rails (block force-push, secrets, `.env` writes, `gh pr merge`), docs-drift marker, session logging |
+
+`.claude/` is listed in `.gitignore`, so these files stay local unless you change that. Workflow tooling that is tracked: `scripts/sdlc/` (retry ledger, PR-body check, consistency checks). Run its tests with `npm run test:sdlc`; `npm test` still runs only the app tests.
 
 ### Artifacts produced
 
-`docs/requirements.md` → `architecture.md` → `design-review.md` → `impl-plan.md` → code and tests → `code-review.md` → `verification-report.md` → `pr-description.md`, plus `docs/traceability.md`, `README.md`, `CHANGELOG.md`, and `.sdlc/state.md` (resume state).
+`docs/requirements.md` → `architecture.md` → `design-review.md` → `impl-plan.md` → code and tests → `code-review.md` → `verification-report.md` → `pr-description.md`, plus `docs/traceability.md`, `README.md`, `CHANGELOG.md`, and `.sdlc/state.md` (resume state), `.sdlc/retry-ledger.json` and `.sdlc/retry-log.md` (retry evidence).
 
 ### Requirements
 

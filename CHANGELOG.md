@@ -4,6 +4,15 @@ All notable changes are recorded here. The format follows [Keep a Changelog](htt
 
 ## [Unreleased]
 
+### Added
+- SDLC workflow: every stage now has a documented contract (W1-W18) and a retry loop of at most 2 attempts, with a retry ledger that records attempts, failure reasons and one-time side effects.
+- SDLC workflow: engineering skills for requirements, architecture, JavaScript implementation, code review (15-point checklist), testing and verification.
+- SDLC workflow: every pull request body carries an "AI-Assisted Pull Request" disclosure, validated before the PR is created.
+
+### Changed
+- Code review severities are now Blocker, Major, Minor and Suggestion; the reviewer reports findings and never edits code.
+- Verification status can now be PASS, FAIL or BLOCKED.
+
 ## [0.1.0] - 2026-11-07
 
 ### Added

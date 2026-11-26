@@ -1,5 +1,14 @@
 # feat: create a TODO task with local storage persistence
 
+## 🤖 AI-Assisted Pull Request
+
+This pull request was created with the assistance of an AI-driven SDLC workflow.
+
+AI assistance was used for requirements analysis, planning, design, implementation and supporting documentation, as applicable to this PR.
+
+**Human Review Required:**
+All generated changes and supporting evidence must be reviewed and validated by a human before approval and merging.
+
 ## Summary
 
 Adds the "Create a TODO Task" story (`user-story/user-story-create-todo-task.md`): a single-page TODO app where a user types a task title, presses **Add Task** or Enter, sees the task listed as incomplete, and finds it again after a refresh because it is saved in browser local storage. It is plain HTML, CSS and JavaScript with no build step and no runtime dependencies, so it opens straight from `index.html`. The work was produced stage by stage (requirements, architecture, design review, plan, implementation, code review, verification), each approved by a human; the documents are in `docs/`.
